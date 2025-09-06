@@ -36,11 +36,11 @@
     }
     .scaryImage {
       position: absolute;
-      width: 250px; /* make bigger */
-      pointer-events: none; /* so clicks go through */
+      width: 250px;
+      pointer-events: none;
     }
 
-    /* Styles for scaryban.png section */
+    /* Scaryban section */
     #scaryBanContainer {
       position: fixed;
       bottom: 20px;
@@ -78,7 +78,7 @@
   
   <script>
     let day = 0;
-    
+
     function nextDay() {
       day++;
       const dayText = document.getElementById("dayText");
@@ -86,24 +86,43 @@
       if (day <= 7) {
         dayText.textContent = day + " day" + (day > 1 ? "s" : "");
       }
+
+      // 0.1% chance to spawn scaryban2
+      if (Math.random() < 0.001) {
+        let img2 = document.createElement("img");
+        img2.src = "scaryban2.png";
+        img2.className = "scaryImage";
+
+        const textRect = dayText.getBoundingClientRect();
+        const imgSize = 250;
+        let x2, y2;
+
+        do {
+          x2 = Math.random() * (window.innerWidth - imgSize);
+          y2 = Math.random() * (window.innerHeight - imgSize);
+        } while (
+          x2 + imgSize > textRect.left &&
+          x2 < textRect.right &&
+          y2 + imgSize > textRect.top &&
+          y2 < textRect.bottom
+        );
+
+        img2.style.left = x2 + "px";
+        img2.style.top = y2 + "px";
+
+        document.body.appendChild(img2);
+      }
       
       if (day === 7) {
-        // Confetti blast
-        confetti({
-          particleCount: 300,
-          spread: 120,
-          origin: { y: 0.6 }
-        });
+        confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
 
-        // Spawn a new scary image
         let img = document.createElement("img");
-        img.src = "scary.png"; // make sure this file is in the same folder
+        img.src = "scary.png";
         img.className = "scaryImage";
         
-        // Random position avoiding the text
         const textRect = dayText.getBoundingClientRect();
-        let x, y;
         const imgSize = 250;
+        let x, y;
 
         do {
           x = Math.random() * (window.innerWidth - imgSize);
@@ -120,7 +139,6 @@
 
         document.body.appendChild(img);
 
-        // Reset counter back to 0
         day = 0;
         dayText.textContent = "7 day counter skibidi no fake its real";
       }
