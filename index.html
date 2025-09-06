@@ -39,6 +39,33 @@
       width: 250px; /* make bigger */
       pointer-events: none; /* so clicks go through */
     }
+
+    /* Styles for scaryban.png section */
+    #scaryBanContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 250px;
+      z-index: 1000;
+    }
+    #scaryBanContainer img {
+      width: 100%;
+      display: block;
+    }
+    #scaryBanText {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    #scaryBanArrow {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 20px solid red;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
@@ -99,5 +126,12 @@
       }
     }
   </script>
+
+  <!-- Scary Ban Section -->
+  <div id="scaryBanContainer">
+    <div id="scaryBanText">look at this fart face lmaooo haha</div>
+    <div id="scaryBanArrow"></div>
+    <img src="scaryban.png" alt="Scary Ban">
+  </div>
 </body>
 </html>
