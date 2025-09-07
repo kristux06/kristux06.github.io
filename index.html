@@ -21,7 +21,7 @@
     #dayText {
       font-size: 2em;
       margin: 20px;
-      z-index: 1000; /* above background */
+      z-index: 1000;
       position: relative;
     }
     button {
@@ -38,12 +38,10 @@
     }
     .scaryImage {
       position: absolute;
-      width: 250px;
       pointer-events: none;
-      z-index: 1500; /* above normal content */
+      z-index: 1500;
     }
 
-    /* Corner box that always shows scaryban.png */
     #scaryBanContainer {
       position: fixed;
       bottom: 20px;
@@ -77,16 +75,15 @@
   <p id="dayText">7 day counter skibidi no fake its real</p>
   <button onclick="nextDay()">Add a Day</button>
 
-  <!-- Confetti library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  
+
   <script>
     let day = 0;
 
-    // Random-spawn images (corner uses scaryban.png so don't list it here)
+    // Random-spawn images
     const images = [
-      { file: "scary.png",    chance: 1.0 }, 
-      { file: "scaryban2.png", chance: 0.3 } 
+      { file: "scary.png", chance: 1.0 },
+      { file: "scaryban2.png", chance: 0.3 }
     ];
 
     function spawnImage(filename) {
@@ -100,7 +97,6 @@
       let x, y;
       let attempts = 0;
 
-      // Avoid overlapping the counter text
       do {
         x = Math.random() * (window.innerWidth - imgSize);
         y = Math.random() * (window.innerHeight - imgSize);
@@ -113,31 +109,43 @@
         attempts < 50
       );
 
+      // Random rotation and scale
+      const rotation = Math.random() * 60 - 30;
+      const scale = 0.8 + Math.random() * 0.4;
+
       img.style.left = x + "px";
       img.style.top = y + "px";
+      img.style.width = imgSize + "px";
+      img.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+      img.style.transition = `transform ${3 + Math.random() * 2}s linear`;
+
       document.body.appendChild(img);
+
+      // Spin animation
+      setTimeout(() => {
+        img.style.transform = `rotate(${rotation + 360}deg) scale(${scale})`;
+      }, 50);
+
+      setTimeout(() => img.remove(), 5000);
     }
 
     function nextDay() {
       day++;
       const dayText = document.getElementById("dayText");
-      
+
       if (day <= 7) {
         dayText.textContent = day + " day" + (day > 1 ? "s" : "");
       }
 
       if (day === 7) {
-        // 🎉 Confetti
         confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
 
-        // Roll chances only after hitting 7
         images.forEach(imgData => {
           if (Math.random() < imgData.chance) {
             spawnImage(imgData.file);
           }
         });
 
-        // Reset after short delay so 7 is visible
         setTimeout(() => {
           day = 0;
           dayText.textContent = "7 day counter skibidi no fake its real";
@@ -145,37 +153,31 @@
       }
     }
 
-    // Function to spawn riode in the center
+    // Fixed Riode spinning in the center
     function spawnRiode() {
-        const img = document.createElement("img");
-        img.src = "riode.png";
-        img.style.position = "fixed";
-        img.style.left = "50%";
-        img.style.top = "50%";
-        img.style.width = "300px";
-        img.style.height = "auto";
-        img.style.transform = "translate(-50%, -50%) rotate(0deg)";
-        img.style.transition = "transform 3s linear";
-        img.style.zIndex = 2000;
+      const img = document.createElement("img");
+      img.src = "riode.png"; // Make sure this file exists
+      img.style.position = "fixed";
+      img.style.left = "50%";
+      img.style.top = "50%";
+      img.style.width = "300px";
+      img.style.height = "auto";
+      img.style.zIndex = 2000;
+      img.style.transform = "translate(-50%, -50%) rotate(0deg)";
+      img.style.transition = "transform 3s linear";
 
-        document.body.appendChild(img);
+      document.body.appendChild(img);
 
-        // Start rotation
-        setTimeout(() => {
-            img.style.transform = "translate(-50%, -50%) rotate(1080deg)"; // 3 full spins
-        }, 50);
+      requestAnimationFrame(() => {
+        img.style.transform = "translate(-50%, -50%) rotate(1080deg)";
+      });
 
-        // Remove after 3 seconds
-        setTimeout(() => {
-            img.remove();
-        }, 3000);
+      setTimeout(() => img.remove(), 3000);
     }
 
-    // Add click listener to scaryban image
     document.querySelector("#scaryBanContainer img").addEventListener("click", spawnRiode);
   </script>
 
-  <!-- Always-visible scaryban in the corner (now scaryban.png) -->
   <div id="scaryBanContainer">
     <div id="scaryBanText">look at him! hes so smegma!!</div>
     <div id="scaryBanArrow"></div>
