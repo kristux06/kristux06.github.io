@@ -21,6 +21,8 @@
     #dayText {
       font-size: 2em;
       margin: 20px;
+      z-index: 1000; /* above background */
+      position: relative;
     }
     button {
       padding: 15px 40px;
@@ -38,6 +40,7 @@
       position: absolute;
       width: 250px;
       pointer-events: none;
+      z-index: 1500; /* above normal content */
     }
 
     /* Corner box that always shows scaryban.png */
@@ -80,10 +83,10 @@
   <script>
     let day = 0;
 
-    // Random-spawn images (corner uses scaryban.png, so don't list it here)
+    // Random-spawn images (corner uses scaryban.png so don't list it here)
     const images = [
-      { file: "scary.png",    chance: 0.20 }, // 20%
-      { file: "scaryban2.png", chance: 0.05 } // 5%
+      { file: "scary.png",    chance: 1.0 }, 
+      { file: "scaryban2.png", chance: 0.3 } 
     ];
 
     function spawnImage(filename) {
