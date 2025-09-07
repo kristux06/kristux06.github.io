@@ -79,10 +79,10 @@
   <script>
     let day = 0;
 
-    // Random spawn images (not scaryban2)
+    // Images + their spawn chances
     const images = [
-      { file: "scary.png", chance: 1.0 },     // 20% chance
-      { file: "scaryban2.png", chance: 0.05 }  // 5% chance
+      { file: "scary.png", chance: 1.0 },     // 20%
+      { file: "scaryban2.png", chance: 0.05 }  // 5%
     ];
 
     function spawnImage(filename) {
@@ -119,20 +119,18 @@
         dayText.textContent = day + " day" + (day > 1 ? "s" : "");
       }
 
-      // Roll for each image individually
-      images.forEach(imgData => {
-        if (Math.random() < imgData.chance) {
-          spawnImage(imgData.file);
-        }
-      });
-
       if (day === 7) {
+        // 🎉 Confetti
         confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
 
-        // Guaranteed random spawn on day 7
-        const randomImg = images[Math.floor(Math.random() * images.length)];
-        spawnImage(randomImg.file);
+        // Spawn images based on their chances
+        images.forEach(imgData => {
+          if (Math.random() < imgData.chance) {
+            spawnImage(imgData.file);
+          }
+        });
 
+        // Reset
         day = 0;
         dayText.textContent = "7 day counter skibidi no fake its real";
       }
@@ -147,4 +145,3 @@
   </div>
 </body>
 </html>
-
